@@ -178,36 +178,34 @@ $ gitc --exclude "feature/*" --exclude "hotfix/*"
   - [x] 実行結果の表示（削除ブランチ一覧）
   - [x] ドライランモードでの表示
 
-#### 3.3 最優先: fetch処理の必須化 🚀
+#### 3.3 最優先: fetch処理の必須化 🚀 ✅ 完了
 **目標**: `git fetch --all --prune` を必ず実行し、ドライランでも動作する
 
-- [ ] **ステップ1: cleanup.goの構造体からNoFetchフィールド削除** ⭐ 最重要
-  - [ ] CleanupOptionsからNoFetchフィールドを削除
-  - [ ] テスト: 構造体の変更確認
+- [x] **ステップ1: cleanup.goの構造体からNoFetchフィールド削除** ⭐ 最重要
+  - [x] CleanupOptionsからNoFetchフィールドを削除
+  - [x] テスト: 構造体の変更確認
 
-- [ ] **ステップ2: fetch処理の必須化実装**
-  - [ ] cleanup.goでfetch処理を必須化（条件分岐なし）
-  - [ ] ドライランモードでもfetch実行するよう変更
-  - [ ] テスト: fetch処理の必須確認
+- [x] **ステップ2: fetch処理の必須化実装**
+  - [x] cleanup.goでfetch処理を必須化（条件分岐なし）
+  - [x] ドライランモードでもfetch実行するよう変更
+  - [x] テスト: fetch処理の必須確認
 
-- [ ] **ステップ3: cmd/root.goからNoFetchオプション削除**
-  - [ ] flagNoFetch変数削除
-  - [ ] --no-fetchフラグ定義削除
-  - [ ] CleanupOptionsからNoFetchオプション削除
-  - [ ] テスト: フラグ削除確認
+- [x] **ステップ3: cmd/root.goからNoFetchオプション削除**
+  - [x] flagNoFetch変数削除
+  - [x] --no-fetchフラグ定義削除
+  - [x] CleanupOptionsからNoFetchオプション削除
+  - [x] テスト: フラグ削除確認
 
-- [ ] **ステップ4: 処理フロー確認**
-  - [ ] デフォルトブランチ切り替え → **必須fetch** → プル → 削除の順序
-  - [ ] ドライランでのfetch実行確認
-  - [ ] テスト: 更新された処理順序の確認
+- [x] **ステップ4: 処理フロー確認**
+  - [x] デフォルトブランチ切り替え → **必須fetch** → プル → 削除の順序
+  - [x] ドライランでのfetch実行確認
+  - [x] テスト: 更新された処理順序の確認
 
 #### 3.4 追加機能（fetch必須化後）
 - [ ] **詳細オプション**
-  - [ ] `--verbose, -v`: 詳細ログ表示
-  - [ ] `--force`: 強制実行
+  - [x] `--verbose, -v`: 詳細ログ表示 ✅ 完了
   - [ ] `--default-branch`: ブランチ手動指定
   - [ ] `--exclude`: 除外パターン
-  - [ ] `--no-pull`: プルスキップ
 
 - [ ] **UI向上**
   - [ ] 絵文字付き進行状況表示
