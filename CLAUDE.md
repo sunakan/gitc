@@ -334,6 +334,7 @@ $ gitc --exclude "feature/*" --exclude "hotfix/*"
 - **重要**: 生成AIマーカー（🤖 Generated with [Claude Code]、Co-Authored-By: Claude）は不要
   - 自然なコミットメッセージを心がける
   - 開発者の意図を明確に表現する
+  - AIアシスタンスを受けた場合でも、人間の開発者として自然なコミットを行う
 
 ### 優先順位
 1. **Phase 1-2**: 基本機能を最優先で実装
