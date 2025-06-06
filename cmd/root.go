@@ -10,8 +10,9 @@ import (
 
 var (
 	// フラグ変数
-	flagDryRun bool
-	flagYes    bool
+	flagDryRun        bool
+	flagYes           bool
+	flagDefaultBranch string
 )
 
 // newRootCmd creates a new root command
@@ -25,9 +26,10 @@ and removes unnecessary local branches.`,
 		RunE: runCleanup,
 	}
 
-	// フラグの定義（最小限）
+	// フラグの定義
 	cmd.Flags().BoolVar(&flagDryRun, "dry-run", false, "Perform a dry run without making actual changes")
 	cmd.Flags().BoolVarP(&flagYes, "yes", "y", false, "Skip confirmation prompts")
+	cmd.Flags().StringVar(&flagDefaultBranch, "default-branch", "", "Specify the default branch to switch to")
 
 	return cmd
 }
@@ -43,9 +45,10 @@ func runCleanup(cmd *cobra.Command, args []string) error {
 
 	// クリーンアップオプションの設定
 	options := git.CleanupOptions{
-		DryRun: flagDryRun,
-		Yes:    flagYes,
-		NoPull: true, // 最小実装ではプルをスキップ
+		DryRun:        flagDryRun,
+		Yes:           flagYes,
+		DefaultBranch: flagDefaultBranch,
+		NoPull:        true, // 最小実装ではプルをスキップ
 	}
 
 	// クリーンアップ実行
