@@ -71,6 +71,14 @@ func ExecuteCleanup(options CleanupOptions) (*CleanupResult, error) {
 	logVerbose("デフォルトブランチの検出を開始")
 	var defaultBranch string
 	if options.DefaultBranch != "" {
+		// 手動指定されたブランチの存在確認
+		exists, err := BranchExists(options.DefaultBranch)
+		if err != nil {
+			return nil, NewGitError("cleanup", err).WithMessage("failed to check branch existence")
+		}
+		if !exists {
+			return nil, NewGitError("cleanup", fmt.Errorf("specified branch '%s' does not exist", options.DefaultBranch))
+		}
 		defaultBranch = options.DefaultBranch
 		logVerbose("手動指定されたデフォルトブランチ: %s", defaultBranch)
 	} else {

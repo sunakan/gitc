@@ -114,6 +114,37 @@ func DeleteBranch(branch string, force bool) error {
 	return nil
 }
 
+// BranchExists は指定されたブランチが存在するかチェックします
+func BranchExists(branch string) (bool, error) {
+	// ローカルブランチをチェック
+	localBranches, err := ListLocalBranches()
+	if err != nil {
+		return false, NewGitError("check-branch-exists", err).WithMessage("failed to list local branches")
+	}
+
+	for _, localBranch := range localBranches {
+		if localBranch == branch {
+			return true, nil
+		}
+	}
+
+	// リモートブランチもチェック
+	remoteBranches, err := ListRemoteBranches()
+	if err != nil {
+		// リモートブランチの取得に失敗した場合は警告として扱い、ローカルのみの結果を返す
+		return false, nil
+	}
+
+	for _, remoteBranch := range remoteBranches {
+		// origin/branch 形式のリモートブランチ名から branch 部分を抽出
+		if strings.HasSuffix(remoteBranch, "/"+branch) {
+			return true, nil
+		}
+	}
+
+	return false, nil
+}
+
 // filterEmptyStrings はスライスから空文字列を除去します
 func filterEmptyStrings(strs []string) []string {
 	var filtered []string
