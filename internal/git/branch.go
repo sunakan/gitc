@@ -115,9 +115,9 @@ func DeleteBranch(branch string, force bool) error {
 }
 
 // filterEmptyStrings はスライスから空文字列を除去します
-func filterEmptyStrings(strings []string) []string {
+func filterEmptyStrings(strs []string) []string {
 	var filtered []string
-	for _, s := range strings {
+	for _, s := range strs {
 		if s = strings.TrimSpace(s); s != "" {
 			filtered = append(filtered, s)
 		}
