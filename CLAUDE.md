@@ -181,15 +181,24 @@ $ gitc --exclude "feature/*" --exclude "hotfix/*"
 #### 3.3 最優先: fetch処理の必須化 🚀
 **目標**: `git fetch --all --prune` を必ず実行し、ドライランでも動作する
 
-- [ ] **fetch処理の必須化** ⭐ 最重要
-  - [ ] cleanup.goでfetch処理を必須化（フラグなし）
-  - [ ] ドライランモードでもfetch実行
-  - [ ] cmd/root.goからNoFetchオプション削除
-  - [ ] テスト: fetch処理の必須確認
-  - [ ] テスト: ドライランでのfetch実行確認
+- [ ] **ステップ1: cleanup.goの構造体からNoFetchフィールド削除** ⭐ 最重要
+  - [ ] CleanupOptionsからNoFetchフィールドを削除
+  - [ ] テスト: 構造体の変更確認
 
-- [ ] **処理フロー更新**
+- [ ] **ステップ2: fetch処理の必須化実装**
+  - [ ] cleanup.goでfetch処理を必須化（条件分岐なし）
+  - [ ] ドライランモードでもfetch実行するよう変更
+  - [ ] テスト: fetch処理の必須確認
+
+- [ ] **ステップ3: cmd/root.goからNoFetchオプション削除**
+  - [ ] flagNoFetch変数削除
+  - [ ] --no-fetchフラグ定義削除
+  - [ ] CleanupOptionsからNoFetchオプション削除
+  - [ ] テスト: フラグ削除確認
+
+- [ ] **ステップ4: 処理フロー確認**
   - [ ] デフォルトブランチ切り替え → **必須fetch** → プル → 削除の順序
+  - [ ] ドライランでのfetch実行確認
   - [ ] テスト: 更新された処理順序の確認
 
 #### 3.4 追加機能（fetch必須化後）
