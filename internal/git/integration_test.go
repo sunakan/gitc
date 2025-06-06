@@ -45,7 +45,7 @@ func TestIntegrationGitOperations(t *testing.T) {
 		}
 		
 		// 新しいブランチを作成してチェックアウト
-		result, err := ExecuteCommand("checkout", "-b", "test-branch")
+		_, err = ExecuteCommand("checkout", "-b", "test-branch")
 		if err != nil {
 			t.Fatalf("Failed to create test branch: %v", err)
 		}
