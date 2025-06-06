@@ -134,11 +134,11 @@ $ gitc --exclude "feature/*" --exclude "hotfix/*"
 ## Phase 1: プロジェクト基盤構築 🏗️
 
 ### 環境セットアップ
-- [ ] Go モジュール初期化（`go mod init github.com/sunakan/gitc`）
-- [ ] Cobra CLI依存関係追加
-- [ ] 基本ディレクトリ構造作成
-- [ ] .gitignore ファイル作成（Go + Claude Code用）
-- [ ] README.md 基本構造作成
+- [x] Go モジュール初期化（`go mod init github.com/sunakan/gitc`）
+- [x] Cobra CLI依存関係追加
+- [x] 基本ディレクトリ構造作成
+- [x] .gitignore ファイル作成（Go + Claude Code用）
+- [x] README.md 基本構造作成
 
 ### プロジェクト構造
 ```
