@@ -268,6 +268,9 @@ gitc/
 - 小さなコミットを心がける
 - コミットメッセージは分かりやすく
 - .git ディレクトリ以下のファイルは直接編集しない（Gitコマンドを使用する）
+- 各Phaseごとに専用ブランチを作成し、Phase完了時にPull Requestを作成してマージする
+  - 例: `phase3-cli-interface`、`phase4-advanced-features` など
+  - Phase内でも必要に応じて機能ブランチを切る
 
 ### 優先順位
 1. **Phase 1-2**: 基本機能を最優先で実装
