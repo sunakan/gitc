@@ -72,8 +72,12 @@ func ExecuteCleanup(options CleanupOptions) (*CleanupResult, error) {
 	}
 
 	if currentBranch != defaultBranch {
-		if err := CheckoutBranch(defaultBranch); err != nil {
-			return nil, NewGitError("cleanup", err).WithMessage("failed to switch to default branch")
+		if options.DryRun {
+			// ドライランモードではブランチ切り替えはシミュレーションのみ
+		} else {
+			if err := CheckoutBranch(defaultBranch); err != nil {
+				return nil, NewGitError("cleanup", err).WithMessage("failed to switch to default branch")
+			}
 		}
 	}
 
