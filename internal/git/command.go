@@ -7,13 +7,13 @@ import (
 	"strings"
 )
 
-// CommandResult represents the result of a git command execution
+// CommandResult はGitコマンドの実行結果を表します
 type CommandResult struct {
 	Output string
 	Error  string
 }
 
-// ExecuteCommand executes a git command and returns the result
+// ExecuteCommand はGitコマンドを実行し、結果を返します
 func ExecuteCommand(args ...string) (*CommandResult, error) {
 	cmd := exec.Command("git", args...)
 	
@@ -38,7 +38,7 @@ func ExecuteCommand(args ...string) (*CommandResult, error) {
 	return result, nil
 }
 
-// ExecuteCommandWithInput executes a git command with input and returns the result
+// ExecuteCommandWithInput は入力を伴うGitコマンドを実行し、結果を返します
 func ExecuteCommandWithInput(input string, args ...string) (*CommandResult, error) {
 	cmd := exec.Command("git", args...)
 	cmd.Stdin = strings.NewReader(input)

@@ -6,11 +6,11 @@ import (
 	"time"
 )
 
-// Pull performs a git pull operation
+// Pull はgit pull操作を実行します
 func Pull() error {
 	result, err := ExecuteCommand("pull")
 	if err != nil {
-		// Check if it's a merge conflict
+		// マージコンフリクトか確認
 		if strings.Contains(result.Error, "conflict") || strings.Contains(result.Output, "conflict") {
 			return NewGitError("pull", ErrMergeConflict)
 		}
@@ -19,11 +19,11 @@ func Pull() error {
 	return nil
 }
 
-// PullWithRebase performs a git pull with rebase
+// PullWithRebase はrebaseを伴うgit pullを実行します
 func PullWithRebase() error {
 	result, err := ExecuteCommand("pull", "--rebase")
 	if err != nil {
-		// Check if it's a merge conflict
+		// マージコンフリクトか確認
 		if strings.Contains(result.Error, "conflict") || strings.Contains(result.Output, "conflict") {
 			return NewGitError("pull", ErrMergeConflict).WithMessage("conflict during rebase")
 		}
@@ -32,7 +32,7 @@ func PullWithRebase() error {
 	return nil
 }
 
-// Fetch updates remote references
+// Fetch はリモート参照を更新します
 func Fetch() error {
 	_, err := ExecuteCommand("fetch", "--all", "--prune")
 	if err != nil {
@@ -41,17 +41,17 @@ func Fetch() error {
 	return nil
 }
 
-// CheckRemoteAccess verifies that we can access the remote repository
+// CheckRemoteAccess はリモートリポジトリにアクセスできるか確認します
 func CheckRemoteAccess() error {
-	// Set a timeout for the remote check
+	// リモートチェックのタイムアウトを設定
 	result, err := ExecuteCommandWithTimeout(10*time.Second, "ls-remote", "--heads", "origin")
 	if err != nil {
 		return NewGitError("check-remote", ErrRemoteAccessFailed).WithMessage(fmt.Sprintf("failed to access remote: %v", err))
 	}
 	
-	// If we get here but no output, the remote might be empty but accessible
+	// 出力がない場合、リモートは空だがアクセス可能かもしれない
 	if result.Output == "" {
-		// Try to get remote URL to ensure remote exists
+		// リモートが存在するか確認するためURLを取得
 		urlResult, urlErr := ExecuteCommand("remote", "get-url", "origin")
 		if urlErr != nil {
 			return NewGitError("check-remote", ErrRemoteAccessFailed).WithMessage("no remote 'origin' configured")
@@ -64,7 +64,7 @@ func CheckRemoteAccess() error {
 	return nil
 }
 
-// ExecuteCommandWithTimeout executes a git command with a timeout
+// ExecuteCommandWithTimeout はタイムアウト付きでGitコマンドを実行します
 func ExecuteCommandWithTimeout(timeout time.Duration, args ...string) (*CommandResult, error) {
 	type resultWrapper struct {
 		result *CommandResult
@@ -86,7 +86,7 @@ func ExecuteCommandWithTimeout(timeout time.Duration, args ...string) (*CommandR
 	}
 }
 
-// HasRemote checks if a remote with the given name exists
+// HasRemote は指定された名前のリモートが存在するか確認します
 func HasRemote(name string) (bool, error) {
 	result, err := ExecuteCommand("remote")
 	if err != nil {
@@ -103,7 +103,7 @@ func HasRemote(name string) (bool, error) {
 	return false, nil
 }
 
-// GetRemoteURL returns the URL of the specified remote
+// GetRemoteURL は指定されたリモートのURLを返します
 func GetRemoteURL(name string) (string, error) {
 	result, err := ExecuteCommand("remote", "get-url", name)
 	if err != nil {

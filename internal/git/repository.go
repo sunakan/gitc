@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 )
 
-// IsGitRepository checks if the current directory is a git repository
+// IsGitRepository は指定されたディレクトリがGitリポジトリかどうかを確認します
 func IsGitRepository(path string) error {
 	gitDir := filepath.Join(path, ".git")
 	info, err := os.Stat(gitDir)
@@ -24,7 +24,7 @@ func IsGitRepository(path string) error {
 	return nil
 }
 
-// GetCurrentDirectory returns the current working directory
+// GetCurrentDirectory は現在の作業ディレクトリを返します
 func GetCurrentDirectory() (string, error) {
 	cwd, err := os.Getwd()
 	if err != nil {

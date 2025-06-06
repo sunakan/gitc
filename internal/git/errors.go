@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-// Common errors
+// 一般的なエラー
 var (
 	ErrNotGitRepository     = errors.New("not a git repository")
 	ErrNoDefaultBranch      = errors.New("could not detect default branch")
@@ -15,15 +15,15 @@ var (
 	ErrCannotDeleteCurrent  = errors.New("cannot delete current branch")
 )
 
-// GitError represents a git-specific error with context
+// GitError はGit固有のエラーとコンテキストを表します
 type GitError struct {
-	Op      string // Operation that failed
-	Path    string // Path where the error occurred
-	Err     error  // Underlying error
-	Message string // Additional context message
+	Op      string // 失敗した操作
+	Path    string // エラーが発生したパス
+	Err     error  // 内部エラー
+	Message string // 追加のコンテキストメッセージ
 }
 
-// Error implements the error interface
+// Error はerrorインターフェースを実装します
 func (e *GitError) Error() string {
 	if e.Message != "" {
 		return fmt.Sprintf("git %s: %s: %v", e.Op, e.Message, e.Err)
@@ -34,12 +34,12 @@ func (e *GitError) Error() string {
 	return fmt.Sprintf("git %s: %v", e.Op, e.Err)
 }
 
-// Unwrap returns the underlying error
+// Unwrap は内部エラーを返します
 func (e *GitError) Unwrap() error {
 	return e.Err
 }
 
-// NewGitError creates a new GitError
+// NewGitError は新しいGitErrorを作成します
 func NewGitError(op string, err error) *GitError {
 	return &GitError{
 		Op:  op,
@@ -47,34 +47,34 @@ func NewGitError(op string, err error) *GitError {
 	}
 }
 
-// WithPath adds a path to the GitError
+// WithPath はGitErrorにパスを追加します
 func (e *GitError) WithPath(path string) *GitError {
 	e.Path = path
 	return e
 }
 
-// WithMessage adds a message to the GitError
+// WithMessage はGitErrorにメッセージを追加します
 func (e *GitError) WithMessage(msg string) *GitError {
 	e.Message = msg
 	return e
 }
 
-// IsNotGitRepository checks if the error indicates not a git repository
+// IsNotGitRepository はエラーがGitリポジトリではないことを示しているか確認します
 func IsNotGitRepository(err error) bool {
 	return errors.Is(err, ErrNotGitRepository)
 }
 
-// IsNoDefaultBranch checks if the error indicates no default branch found
+// IsNoDefaultBranch はエラーがデフォルトブランチが見つからないことを示しているか確認します
 func IsNoDefaultBranch(err error) bool {
 	return errors.Is(err, ErrNoDefaultBranch)
 }
 
-// IsRemoteAccessFailed checks if the error indicates remote access failure
+// IsRemoteAccessFailed はエラーがリモートアクセス失敗を示しているか確認します
 func IsRemoteAccessFailed(err error) bool {
 	return errors.Is(err, ErrRemoteAccessFailed)
 }
 
-// IsMergeConflict checks if the error indicates a merge conflict
+// IsMergeConflict はエラーがマージコンフリクトを示しているか確認します
 func IsMergeConflict(err error) bool {
 	return errors.Is(err, ErrMergeConflict)
 }

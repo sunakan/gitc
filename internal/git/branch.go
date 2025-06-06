@@ -5,19 +5,19 @@ import (
 	"strings"
 )
 
-// DetectDefaultBranch detects the default branch of the repository
+// DetectDefaultBranch はリポジトリのデフォルトブランチを検出します
 func DetectDefaultBranch() (string, error) {
-	// Try to get the default branch from remote HEAD
+	// リモートHEADからデフォルトブランチを取得してみる
 	result, err := ExecuteCommand("symbolic-ref", "refs/remotes/origin/HEAD")
 	if err == nil && result.Output != "" {
-		// Extract branch name from refs/remotes/origin/main format
+		// refs/remotes/origin/main形式からブランチ名を抽出
 		parts := strings.Split(result.Output, "/")
 		if len(parts) > 0 {
 			return parts[len(parts)-1], nil
 		}
 	}
 	
-	// Fallback: check common default branch names
+	// フォールバック: 一般的なデフォルトブランチ名を確認
 	commonDefaults := []string{"main", "master", "develop", "dev"}
 	branches, err := ListLocalBranches()
 	if err != nil {
@@ -32,7 +32,7 @@ func DetectDefaultBranch() (string, error) {
 		}
 	}
 	
-	// If still not found, check remote branches
+	// まだ見つからない場合は、リモートブランチを確認
 	remoteBranches, err := ListRemoteBranches()
 	if err == nil {
 		for _, defaultName := range commonDefaults {
@@ -47,7 +47,7 @@ func DetectDefaultBranch() (string, error) {
 	return "", NewGitError("detect-default-branch", ErrNoDefaultBranch)
 }
 
-// GetCurrentBranch returns the name of the current branch
+// GetCurrentBranch は現在のブランチ名を返します
 func GetCurrentBranch() (string, error) {
 	result, err := ExecuteCommand("rev-parse", "--abbrev-ref", "HEAD")
 	if err != nil {
@@ -61,7 +61,7 @@ func GetCurrentBranch() (string, error) {
 	return result.Output, nil
 }
 
-// ListLocalBranches returns a list of all local branches
+// ListLocalBranches はすべてのローカルブランチの一覧を返します
 func ListLocalBranches() ([]string, error) {
 	result, err := ExecuteCommand("branch", "--format=%(refname:short)")
 	if err != nil {
@@ -76,7 +76,7 @@ func ListLocalBranches() ([]string, error) {
 	return filterEmptyStrings(branches), nil
 }
 
-// ListRemoteBranches returns a list of all remote branches
+// ListRemoteBranches はすべてのリモートブランチの一覧を返します
 func ListRemoteBranches() ([]string, error) {
 	result, err := ExecuteCommand("branch", "-r", "--format=%(refname:short)")
 	if err != nil {
@@ -91,7 +91,7 @@ func ListRemoteBranches() ([]string, error) {
 	return filterEmptyStrings(branches), nil
 }
 
-// CheckoutBranch switches to the specified branch
+// CheckoutBranch は指定されたブランチに切り替えます
 func CheckoutBranch(branch string) error {
 	_, err := ExecuteCommand("checkout", branch)
 	if err != nil {
@@ -100,7 +100,7 @@ func CheckoutBranch(branch string) error {
 	return nil
 }
 
-// DeleteBranch deletes the specified local branch
+// DeleteBranch は指定されたローカルブランチを削除します
 func DeleteBranch(branch string, force bool) error {
 	args := []string{"branch", "-d", branch}
 	if force {
@@ -114,7 +114,7 @@ func DeleteBranch(branch string, force bool) error {
 	return nil
 }
 
-// filterEmptyStrings removes empty strings from a slice
+// filterEmptyStrings はスライスから空文字列を除去します
 func filterEmptyStrings(strings []string) []string {
 	var filtered []string
 	for _, s := range strings {
