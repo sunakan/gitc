@@ -65,11 +65,6 @@ func ExecuteCleanup(options CleanupOptions) (*CleanupResult, error) {
 	}
 	result.DefaultBranch = defaultBranch
 
-	if options.DryRun {
-		// ドライランモードの場合は実際の処理は行わない
-		return result, nil
-	}
-
 	// 3. デフォルトブランチへの切り替え
 	currentBranch, err := GetCurrentBranch()
 	if err != nil {
@@ -82,7 +77,18 @@ func ExecuteCleanup(options CleanupOptions) (*CleanupResult, error) {
 		}
 	}
 
-	// 4. プル処理（--no-pullが指定されていない場合）
+	// 4. フェッチ処理（必須・ドライランでも実行）
+	if err := Fetch(); err != nil {
+		// フェッチ失敗は警告として扱い、処理を継続
+		result.Errors = append(result.Errors, NewGitError("cleanup", err).WithMessage("fetch failed"))
+	}
+
+	if options.DryRun {
+		// ドライランモードの場合はfetch以外の実際の処理は行わない
+		return result, nil
+	}
+
+	// 5. プル処理（--no-pullが指定されていない場合）
 	if !options.NoPull {
 		if err := Pull(); err != nil {
 			// プル失敗は警告として扱い、処理を継続
@@ -90,13 +96,13 @@ func ExecuteCleanup(options CleanupOptions) (*CleanupResult, error) {
 		}
 	}
 
-	// 5. ローカルブランチの一覧取得
+	// 6. ローカルブランチの一覧取得
 	branches, err := ListLocalBranches()
 	if err != nil {
 		return nil, NewGitError("cleanup", err)
 	}
 
-	// 6. ブランチの削除
+	// 7. ブランチの削除
 	for _, branch := range branches {
 		if branch == defaultBranch {
 			// デフォルトブランチはスキップ
